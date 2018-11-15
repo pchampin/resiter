@@ -30,6 +30,7 @@
 //! * Select only `Ok(_)`s from the Iterator
 //! * Do something in the `Err(_)` case, but don't change the error-object
 //! * Do something in the `Ok(_)` case, but don't change the ok-object
+//! * Collect `OK(_)`s from the Iterators, propagating the first error if any
 //!
 //! # Usecase
 //!
@@ -189,6 +190,22 @@
 //! # }
 //! ```
 //!
+//! * Collecting values if there is no error, otherwise propagating the first error
+//!
+//! ```
+//! # fn main() -> Result<(), ::std::num::ParseIntError> {
+//! use std::str::FromStr;
+//! use resiter::try_collect::*;
+//!
+//! let v: Vec<usize> = ["1", "2", "4", "5"]
+//!     .into_iter()
+//!     .map(|e| usize::from_str(e))
+//!     .try_collect()?;
+//! assert!(v.len() == 4);
+//! Ok(())
+//! # }
+//! ```
+//!
 //! # License
 //!
 //! MPL 2.0
@@ -201,6 +218,7 @@ pub mod oks;
 pub mod onerr;
 pub mod onok;
 pub mod prelude;
+pub mod try_collect;
 pub mod unwrap;
 mod util;
 pub mod while_ok;
